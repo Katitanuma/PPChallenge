@@ -54,6 +54,8 @@
 
 			this.quehaceres = document.getElementById("quehaceres");
 
+			this.status = document.getElementById("inlineFormCheck");
+
 			this.leer = function(){
 				var datos="";
 
@@ -65,9 +67,10 @@
 					respuesta.map(
 						function(quehacer,index,array){
 							datos+=`<ul class="list-group" >
-									<div class="form-check mb-2 mr-sm-2">
-							       		<input class="form-check-input" type="checkbox" id="inlineFormCheck">
-							       		<label class="form-check-label" for="inlineFormCheck">
+									<div id="fondo" class="form-check mb-2 mr-sm-2">
+							       		<input class="form-check-input" onclick="aplicacion.marcar()" type="checkbox" 
+							       		id="`+quehacer.id+`">
+							       		<label class="form-check-label" for="`+quehacer.id+`">
 							      			`+quehacer.nombre+
 							    		`</label>
 							  	    </div>
@@ -96,20 +99,31 @@
 				})
 				.catch(console.log)	
 			}
+
+			this.marcar = function(){
+				var status = document.getElementsByClassName("form-check-input status");
+				if($(status).prop('checked')){
+					console.log("combo seleccionados")
+				}else{
+					console.log("combo NO seleccionados")
+				}
+			}
+
+
 		}
 
 		aplicacion.leer();
+		
+
 
 		
 		$(document).ready(function() 
-            {    
-           
+            {               
               $('#nombre').keypress(function(e){   
                if(e.which == 13){      
                  aplicacion.agregar();      
                }   
-              });    
-              
+              });                  
            });  
 
 	</script>
