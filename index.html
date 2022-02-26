@@ -24,14 +24,14 @@
  			</div>
  			<div class="col-md-7">
  				
- 				<div class="form-row">
-				    <div class="col-7">
+ 				<div class="row">
+				    <div class="col-6">
 				      <h4> Listado de Quehaceres</h4>
 				    </div>				    
 				    <div class="col-3">
 				      <button type="button" class="btn btn-warning btn-sm">Eliminar Marcados</button>
 				    </div>
-				    <div class="col-2">
+				    <div class="col-3">
 				      <button type="button" class="btn btn-danger btn-sm">Eliminar Todo</button>
 				    </div>
 				 </div> 				
@@ -78,22 +78,23 @@
 					);
 					return this.quehaceres.innerHTML=datos;
 				})
-				.catch(console.log)
-
-				/*datos=`<ul class="list-group" >
-						<div class="form-check mb-2 mr-sm-2">
-				       		<input class="form-check-input" type="checkbox" id="inlineFormCheck">
-				       		<label class="form-check-label" for="inlineFormCheck">
-				      			Lavar ropa
-				    		</label>
-				  	    </div>
-				  	   </ul>
-					   <hr/>`;*/
+				.catch(console.log)				
 				
 			}
 
 			this.agregar = function(){
 				console.log(nombre.value);
+
+				var datosEnviar = {nombre: this.nombre.value}
+
+				fetch(url+"?insertar=1",{method:"POST",body:JSON.stringify(datosEnviar)})
+				.then(r=>r.json())
+				.then((respuesta)=>{
+					console.log("Datos insertados");
+					nombre.value = '';
+					this.leer();					
+				})
+				.catch(console.log)	
 			}
 		}
 
