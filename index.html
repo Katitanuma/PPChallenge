@@ -67,7 +67,9 @@
 
 					respuesta.map(
 						function(quehacer,index,array){
-							datos+=`<ul class="`+quehacer.id+` list-group" id="`+quehacer.id+`">
+							console.log(quehacer.estado)
+							if(quehacer.estado==='0'){
+								datos+=`<ul class="`+quehacer.id+` list-group" id="`+quehacer.id+`">
 									<div class="form-check mb-2 mr-sm-2">
 							       		<input onchange="aplicacion.marcar()" class="N" type="checkbox" 
 							       		id="`+quehacer.id+`" value="`+quehacer.nombre+`">
@@ -77,6 +79,19 @@
 							  	    </div>
 							  	   	</ul>
 								  	<hr/>`;
+							}else{
+								datos+=`<ul class="`+quehacer.id+` list-group alert alert-success" id="`+quehacer.id+`">
+									<div class="form-check mb-2 mr-sm-2">
+							       		<input onchange="aplicacion.marcar()" class="N" type="checkbox" checked="true"
+							       		id="`+quehacer.id+`" value="`+quehacer.nombre+`">
+							       		<label class="form-check-label" for="`+quehacer.id+`">
+							      			`+quehacer.nombre+
+							    		`</label>
+							  	    </div>
+							  	   	</ul>
+								  	<hr/>`;
+							}
+							
 						}
 
 					);
