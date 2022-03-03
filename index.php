@@ -102,6 +102,8 @@
 	if(mysqli_num_rows($sqlQuehaceres) > 0){
 	    $quehaceres = mysqli_fetch_all($sqlQuehaceres,MYSQLI_ASSOC);
 	    echo json_encode($quehaceres);
+	    echo $cleardb_url;
+	    echo $cleardb_db;
 	}
 	else{ 
 		echo json_encode([["success"=>0]]); 
