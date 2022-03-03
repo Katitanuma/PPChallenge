@@ -52,12 +52,7 @@
 	<script>
 		//include("index.php");
 
-		var url="http://localhost/PPChallenge/";
-
-		var neededData; 
-				$.getJSON('index.php', function(jsonData) {
-				    neededData = jsonData; 
-				}); 
+		var url="";		
 
 		var aplicacion = new function(){
 			this.nombre = document.getElementById("nombre");
@@ -69,7 +64,7 @@
 			this.leer = function(){
 				var datos="";		
 
-				fetch(neededData)
+				fetch('index.php')
 				.then(r=>r.json())
 				.then((respuesta)=>{
 					console.log(respuesta)
