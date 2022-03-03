@@ -53,6 +53,15 @@
 	        }
 	    exit();
 	}
+	//Actualizar todo
+	if(isset($_GET["actualizarTodo"])){	    
+	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='1'");
+	    if($sqlQuehaceres){
+	        echo json_encode(["success"=>1]);
+	        exit();
+	    }
+	    else{  echo json_encode(["success"=>0]); }
+	}
 	// Actualiza quehacer completado
 	if(isset($_GET["actualizarC"])){
 	    

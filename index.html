@@ -9,7 +9,7 @@
 <body>
 	<div class="container">	
 		</br>		
-		<h1 class="text-primarys text-center">Pixel Pay Challenge</h1>
+		<h1 class="text-primary text-center">Pixel Pay Challenge</h1>
 		</br>	
  		<div class="row"> 			
  			<div class="col-md-5">
@@ -31,19 +31,16 @@
 				      <h4> Listado de Quehaceres</h4>
 				    </div>				    
 				    <div class="col-3">
-				      <button type="button" onclick="aplicacion.eliminarMarcados()" class="btn btn-warning btn-sm">Vaciar completados</button>
+				      <button type="button" onclick="aplicacion.eliminarMarcados()" class="btn btn-warning btn-sm">Borrar marcados</button>
 				    </div>
 				    <div class="col-3">
-				      <button type="button" class="btn btn-danger btn-sm">Borrar todo</button>
+				      <button type="button" onclick="aplicacion.eliminarTodo()" class="btn btn-danger btn-sm">Borrar todo</button>
 				    </div>
 				 </div> 				
  				<hr/>
- 				<div id="quehaceres">
- 						
-				 </div>
-
- 			
- 		</div>
+ 				<div id="quehaceres"> 						
+				</div> 			
+ 			</div>
 	</div>
 	
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -189,12 +186,7 @@
 			      .filter(i => i.checked) 
 			      .map(function(quehacer,index,array){
 
-			      	//var someElement= document.getElementById(quehacer.id);
-			      	//console.log(quehacer.checked)	
-
-			      	if(quehacer.checked){			      		
-
-	    				//var datosE = {estado: '1'}
+			      	if(quehacer.checked){		
 
 	    				alertify.confirm("¿Estás seguro de eliminar elemento(s) marcado(s)?",
 						  function(){						  	
@@ -215,26 +207,61 @@
 			      }) 		    
 			}
 
+			this.eliminarTodo=function(){
+				var todos = document.querySelectorAll("input[type=checkbox]");
+				var ul = document.querySelectorAll("ul[class*='list-group']");
+	            todos.forEach((element) => {
+		            if (element.checked) {
+		              return false
+		            } else {
+		              fetch(url+"?actualizarTodo")
+						.then(r=>r.json())
+						.then((respuesta)=>{								
+							element.checked = true 
+							
+							console.log("Quehaceres marcados")									
+						})
+						.catch(console.log)		
+		            }
+	            })
+
+	            ul.forEach((ele)=>{
+	            	ele.className+= " alert alert-success"
+	            })
+
+	            aplicacion.leer();
+
+	            alertify.confirm("¿Estás seguro de eliminar todos los elementos?",
+				  function(){						  	
+				  	fetch(url+"?eliminarTodo")
+					.then(r=>r.json())
+					.then((respuesta)=>{								
+						alertify.success('¡Elementos eliminados exitosamente!');
+						aplicacion.leer();
+						console.log("Quehaceres eliminados")									
+					})
+					.catch(console.log)							    
+				  },
+				  function(){
+				    alertify.error('¡Operación cancelada!');						    
+					  });		
+		    
+			}
+
 		}
 
 		aplicacion.leer();	
-		//aplicacion.marcar();  
-
 		
 		$(document).ready(function() 
-            {              	
-              
+            {              	              
               $('#nombre').keypress(function(e){   
                if(e.which == 13){      
                  aplicacion.agregar();      
                }   
               });  
-
            });  
 
 	</script>
-
-	
 
 </body>
 </html>
