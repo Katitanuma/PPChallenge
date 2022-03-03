@@ -51,8 +51,14 @@
 
 	<script>
 		//include("index.php");
-		
+
 		var url="http://localhost/PPChallenge/";
+
+		var neededData; 
+				$.getJSON('index.php', data, function(jsonData) {
+				    neededData = jsonData; 
+				}); 
+
 		var aplicacion = new function(){
 			this.nombre = document.getElementById("nombre");
 
@@ -61,9 +67,9 @@
 			this.status = document.getElementById("inlineFormCheck");
 
 			this.leer = function(){
-				var datos="";				
+				var datos="";		
 
-				fetch(url)
+				fetch(neededData)
 				.then(r=>r.json())
 				.then((respuesta)=>{
 					console.log(respuesta)
