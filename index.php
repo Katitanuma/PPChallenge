@@ -23,27 +23,24 @@
 	    }
 	    else{  echo json_encode(["success"=>0]); }
 	}
-	//Eliminar todos los registros
-	if (isset($_GET["eliminarTodo"])){
-	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer");	
-	    if(mysqli_num_rows($sqlQuehaceres) > 0){
-	    $quehaceres = mysqli_fetch_all($sqlQuehaceres,MYSQLI_ASSOC);
-	    echo json_encode($quehaceres);
-		}
-		else{ 
-			// echo json_encode([["success"=>0]]); 
-		}
-	}
 	//borrar los quehaceres completados
-	if (isset($_GET["eliminarC"])){
-	    $data = json_decode(file_get_contents("php://input"));
-
-	    $estado=(isset($data->estado))?$data->estado:$_GET["eliminarC"];
-	    
-	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer WHERE estado='$estado'");
-	    echo json_encode(["success"=>1]);
-	    exit();
-	}	
+	if (isset($_GET["eliminarC"])){		
+	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer WHERE estado=".$_GET["eliminarC"]);
+	    if($sqlQuehaceres){
+	        echo json_encode(["success"=>1]);
+	        exit();
+	    }
+	    else{  echo json_encode(["success"=>0]); }
+	}
+	//eliminar todo
+	if (isset($_GET["eliminarTodo"])){		
+	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer");
+	    if($sqlQuehaceres){
+	        echo json_encode(["success"=>1]);
+	        exit();
+	    }
+	    else{  echo json_encode(["success"=>0]); }
+	}
 	//Inserta un nuevo quehacer
 	if(isset($_GET["insertar"])){
 	    $data = json_decode(file_get_contents("php://input"));
@@ -64,7 +61,7 @@
 	    $id=(isset($data->id))?$data->id:$_GET["actualizarC"];
 	    $estado=$data->estado;
 	    
-	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='1' WHERE id='$id'");
+	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='$estado' WHERE id='$id'");
 	    echo json_encode(["success"=>1]);
 	    exit();
 	}
@@ -77,7 +74,7 @@
 	    $id=(isset($data->id))?$data->id:$_GET["actualizarNC"];
 	    $estado=$data->estado;
 	    
-	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='0' WHERE id='$id'");
+	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='$estado' WHERE id='$id'");
 	    echo json_encode(["success"=>1]);
 	    exit();
 	}
@@ -88,6 +85,8 @@
 	    echo json_encode($quehaceres);
 	}
 	else{ 
-		// echo json_encode([["success"=>0]]); 
+		echo json_encode([["success"=>0]]); 
 	}
+
+
 ?>

@@ -31,7 +31,7 @@
 				      <h4> Listado de Quehaceres</h4>
 				    </div>				    
 				    <div class="col-3">
-				      <button type="button" class="btn btn-warning btn-sm">Vaciar completados</button>
+				      <button type="button" onclick="aplicacion.eliminarMarcados()" class="btn btn-warning btn-sm">Vaciar completados</button>
 				    </div>
 				    <div class="col-3">
 				      <button type="button" class="btn btn-danger btn-sm">Borrar todo</button>
@@ -71,7 +71,15 @@
 					respuesta.map(
 						function(quehacer,index,array){
 							console.log(quehacer.estado)
-							if(quehacer.estado==='0'){
+
+							if(quehacer.success===0){
+								datos+=`<ul class="list-group alert alert-danger">
+									<div class="form-check mb-2 mr-sm-2">
+							       		<p>No hay registros</p>							       		
+							  	    </div>
+							  	   	</ul>`
+							}else{
+								if(quehacer.estado==='0'){
 								datos+=`<ul class="`+quehacer.id+` list-group" id="`+quehacer.id+`">
 									<div class="form-check mb-2 mr-sm-2">
 							       		<input onchange="aplicacion.marcar()" class="N" type="checkbox" 
@@ -82,18 +90,19 @@
 							  	    </div>
 							  	   	</ul>
 								  	<hr/>`;
-							}else{
-								datos+=`<ul class="`+quehacer.id+` list-group alert alert-success" id="`+quehacer.id+`">
-									<div class="form-check mb-2 mr-sm-2">
-							       		<input onchange="aplicacion.marcar()" class="N" type="checkbox" checked="true"
-							       		id="`+quehacer.id+`" value="`+quehacer.nombre+`">
-							       		<label class="form-check-label" for="`+quehacer.id+`">
-							      			`+quehacer.nombre+
-							    		`</label>
-							  	    </div>
-							  	   	</ul>
-								  	<hr/>`;
-							}
+								}else{
+									datos+=`<ul class="`+quehacer.id+` list-group alert alert-success" id="`+quehacer.id+`">
+										<div class="form-check mb-2 mr-sm-2">
+								       		<input onchange="aplicacion.marcar()" class="N" type="checkbox" checked="true"
+								       		id="`+quehacer.id+`" value="`+quehacer.nombre+`">
+								       		<label class="form-check-label" for="`+quehacer.id+`">
+								      			`+quehacer.nombre+
+								    		`</label>
+								  	    </div>
+								  	   	</ul>
+									  	<hr/>`;
+								}
+							}						
 							
 						}
 
@@ -138,14 +147,15 @@
 						fetch(url+"?actualizarC=" + quehacer.id,{method:"POST",body:JSON.stringify(datosE)})
 						.then(r=>r.json())
 						.then((respuesta)=>{
-							console.log("Quehacer completado");												
+							console.log("Quehacer completado");	
+							aplicacion.leer();											
 						})
 						.catch(console.log)	
 			      	}	         
 
 			      }) 
 
-			    this.leer();
+			    //this.leer();
 
 			    Array.from(checkBoxes) 
 			      .filter(i => !i.checked) 
@@ -160,55 +170,60 @@
 	    				fetch(url+"?actualizarNC=" + quehacer.id,{method:"POST",body:JSON.stringify(datosE)})
 						.then(r=>r.json())
 						.then((respuesta)=>{
-							console.log("Quehacer no completado");												
+							console.log("Quehacer no completado");	
+							aplicacion.leer();											
 						})
 						.catch(console.log)	
 			      	}	           
 
 			      }) 
 
-			    this.leer();						
+			    //this.leer();						
 			}
 
 			this.eliminarMarcados=function(){
-				var checkBoxes = document.querySelectorAll("input[type=checkbox]");
+				var marcados = document.querySelectorAll("input[type=checkbox]");
 
 
-			    Array.from(checkBoxes) 
+			    Array.from(marcados) 
 			      .filter(i => i.checked) 
 			      .map(function(quehacer,index,array){
 
-			      	var someElement= document.getElementById(quehacer.id);
+			      	//var someElement= document.getElementById(quehacer.id);
 			      	//console.log(quehacer.checked)	
 
 			      	if(quehacer.checked){			      		
 
-	    				var datosE = {estado: quehacer.checked}
+	    				//var datosE = {estado: '1'}
 
-						fetch(url+"?eliminarC=" + quehacer.checked,{method:"POST",body:JSON.stringify(datosE)})
-						.then(r=>r.json())
-						.then((respuesta)=>{
-							console.log("Quehaceres eliminados");												
-						})
-						.catch(console.log)	
-			      	}	         
+	    				alertify.confirm("¿Estás seguro de eliminar elemento(s) marcado(s)?",
+						  function(){						  	
+						  	fetch(url+"?eliminarC="+quehacer.checked)
+							.then(r=>r.json())
+							.then((respuesta)=>{								
+								alertify.success('¡Elemento(s) eliminado(s) exitosamente!');
+								aplicacion.leer();
+								console.log("Quehaceres eliminados")									
+							})
+							.catch(console.log)							    
+						  },
+						  function(){
+						    alertify.error('¡Operación cancelada!');						    
+						  });					
+			      	}	     
 
-			      }) 
-
-			    this.leer();
-
+			      }) 		    
 			}
 
 		}
 
 		aplicacion.leer();	
-		aplicacion.marcar();  
+		//aplicacion.marcar();  
 
 		
 		$(document).ready(function() 
             {              	
-              $.notify("Hello World");
-
+              
               $('#nombre').keypress(function(e){   
                if(e.which == 13){      
                  aplicacion.agregar();      
