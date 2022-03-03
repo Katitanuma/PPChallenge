@@ -29,10 +29,10 @@
 				      <h4> Listado de Quehaceres</h4>
 				    </div>				    
 				    <div class="col-3">
-				      <button type="button" class="btn btn-warning btn-sm">Eliminar Marcados</button>
+				      <button type="button" class="btn btn-warning btn-sm">Vaciar completados</button>
 				    </div>
 				    <div class="col-3">
-				      <button type="button" class="btn btn-danger btn-sm">Eliminar Todo</button>
+				      <button type="button" class="btn btn-danger btn-sm">Borrar todo</button>
 				    </div>
 				 </div> 				
  				<hr/>
@@ -125,14 +125,24 @@
 			      .filter(i => i.checked) 
 			      .map(function(quehacer,index,array){
 
-			      	var someElement= document.getElementById(quehacer.id);	
+			      	var someElement= document.getElementById(quehacer.id);
+			      	//console.log(quehacer.checked)	
 
-			      	if(quehacer.checked){
-			      		console.log(quehacer.id)					    					    
-	    				someElement.className += " alert alert-success";
-			      	}	           
+			      	if(quehacer.checked){			      		
+
+	    				var datosE = {estado: quehacer.checked}
+
+						fetch(url+"?actualizarC=" + quehacer.id,{method:"POST",body:JSON.stringify(datosE)})
+						.then(r=>r.json())
+						.then((respuesta)=>{
+							console.log("Quehacer completado");												
+						})
+						.catch(console.log)	
+			      	}	         
 
 			      }) 
+
+			    this.leer();
 
 			    Array.from(checkBoxes) 
 			      .filter(i => !i.checked) 
@@ -141,27 +151,33 @@
 			      	var someElement= document.getElementById(quehacer.id);	
 
 			      	if(!quehacer.checked){
-			      		console.log(quehacer.id)					    					    
-	    				someElement.className = "list-group " + quehacer.id ;
+
+			      		var datosE = {estado: quehacer.checked}
+			      		//console.log(quehacer.id)					    					    
+	    				fetch(url+"?actualizarNC=" + quehacer.id,{method:"POST",body:JSON.stringify(datosE)})
+						.then(r=>r.json())
+						.then((respuesta)=>{
+							console.log("Quehacer no completado");												
+						})
+						.catch(console.log)	
 			      	}	           
 
 			      }) 
+
+			    this.leer();
+
 							
 			}
 
 		}
 
-		aplicacion.leer();
-		
-
+		aplicacion.leer();	
+		aplicacion.marcar();  
 
 		
 		$(document).ready(function() 
-            {     
-
-            	aplicacion.marcar();  
-            	
-	   
+            {              	
+            		   
               $('#nombre').keypress(function(e){   
                if(e.which == 13){      
                  aplicacion.agregar();      

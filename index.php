@@ -23,16 +23,28 @@
 	    }
 	    else{  echo json_encode(["success"=>0]); }
 	}
-	//borrar pero se le debe de enviar una clave ( para borrado )
-	if (isset($_GET["borrar"])){
-	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer WHERE id=".$_GET["borrar"]);
-	    if($sqlQuehaceres){
-	        echo json_encode(["success"=>1]);
-	        exit();
-	    }
-	    else{  echo json_encode(["success"=>0]); }
+	//Eliminar todos los registros
+	if (isset($_GET["eliminarTodo"])){
+	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer");	
+	    if(mysqli_num_rows($sqlQuehaceres) > 0){
+	    $quehaceres = mysqli_fetch_all($sqlQuehaceres,MYSQLI_ASSOC);
+	    echo json_encode($quehaceres);
+		}
+		else{ 
+			// echo json_encode([["success"=>0]]); 
+		}
 	}
-	//Inserta un nuevo registro y recepciona en método post los datos de nombre y correo
+	//borrar los quehaceres completados
+	if (isset($_GET["eliminarC"])){
+	    $data = json_decode(file_get_contents("php://input"));
+
+	    $estado=(isset($data->estado))?$data->estado:$_GET["eliminarC"];
+	    
+	    $sqlQuehaceres = mysqli_query($conexionBD,"DELETE FROM quehacer WHERE estado='$estado'");
+	    echo json_encode(["success"=>1]);
+	    exit();
+	}	
+	//Inserta un nuevo quehacer
 	if(isset($_GET["insertar"])){
 	    $data = json_decode(file_get_contents("php://input"));
 	    $nombre=$data->nombre;
@@ -44,19 +56,32 @@
 	        }
 	    exit();
 	}
-	// Actualiza datos pero recepciona datos de nombre, correo y una clave para realizar la actualización
-	if(isset($_GET["actualizar"])){
+	// Actualiza quehacer completado
+	if(isset($_GET["actualizarC"])){
 	    
 	    $data = json_decode(file_get_contents("php://input"));
 
-	    $id=(isset($data->id))?$data->id:$_GET["actualizar"];
-	    $nombre=$data->nombre;
+	    $id=(isset($data->id))?$data->id:$_GET["actualizarC"];
+	    $estado=$data->estado;
 	    
-	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET nombre='$nombre' WHERE id='$id'");
+	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='1' WHERE id='$id'");
 	    echo json_encode(["success"=>1]);
 	    exit();
 	}
-	// Consulta todos los registros de la tabla empleados
+
+	// Actualiza quehacer no completado
+	if(isset($_GET["actualizarNC"])){
+	    
+	    $data = json_decode(file_get_contents("php://input"));
+
+	    $id=(isset($data->id))?$data->id:$_GET["actualizarNC"];
+	    $estado=$data->estado;
+	    
+	    $sqlQuehaceres = mysqli_query($conexionBD,"UPDATE quehacer SET estado='0' WHERE id='$id'");
+	    echo json_encode(["success"=>1]);
+	    exit();
+	}
+	// Consulta todos los registros de la tabla quehaceres
 	$sqlQuehaceres = mysqli_query($conexionBD,"SELECT * FROM quehacer ");
 	if(mysqli_num_rows($sqlQuehaceres) > 0){
 	    $quehaceres = mysqli_fetch_all($sqlQuehaceres,MYSQLI_ASSOC);
@@ -65,6 +90,4 @@
 	else{ 
 		// echo json_encode([["success"=>0]]); 
 	}
-
-
 ?>
