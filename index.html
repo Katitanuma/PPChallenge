@@ -50,9 +50,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.js"></script>
 
 	<script>
-		//include("index.php");
-
-		var url="";		
+		
+		var url="https://pixelpay.herokuapp.com/";		
 
 		var aplicacion = new function(){
 			this.nombre = document.getElementById("nombre");
@@ -64,7 +63,7 @@
 			this.leer = function(){
 				var datos="";		
 
-				fetch('index.php')
+				fetch(url)
 				.then(r=>r.json())
 				.then((respuesta)=>{
 					console.log(respuesta)
