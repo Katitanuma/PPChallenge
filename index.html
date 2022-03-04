@@ -191,19 +191,19 @@
 
 			      	if(quehacer.checked){		
 
-	    				alertify.confirm("¿Estas seguro de eliminar elemento(s) marcado(s)?",
+	    				alertify.confirm("Estas seguro de eliminar elemento(s) marcado(s)?",
 						  function(){						  	
 						  	fetch(url+"?eliminarC="+quehacer.checked)
 							.then(r=>r.json())
 							.then((respuesta)=>{								
-								alertify.success('¡Elemento(s) eliminado(s) exitosamente!');
+								alertify.success('Elemento(s) eliminado(s) exitosamente!');
 								aplicacion.leer();
 								console.log("Quehaceres eliminados")									
 							})
 							.catch(console.log)							    
 						  },
 						  function(){
-						    alertify.error('¡Operacion cancelada!');						    
+						    alertify.error('Operacion cancelada!');						    
 						  });					
 			      	}	     
 
@@ -234,19 +234,19 @@
 
 	            aplicacion.leer();
 
-	            alertify.confirm("¿Estas seguro de eliminar todos los elementos?",
+	            alertify.confirm("Estas seguro de eliminar todos los elementos?",
 				  function(){						  	
 				  	fetch(url+"?eliminarTodo")
 					.then(r=>r.json())
 					.then((respuesta)=>{								
-						alertify.success('¡Elementos eliminados exitosamente!');
+						alertify.success('Elementos eliminados exitosamente!');
 						aplicacion.leer();
 						console.log("Quehaceres eliminados")									
 					})
 					.catch(console.log)							    
 				  },
 				  function(){
-				    alertify.error('¡Operacion cancelada!');						    
+				    alertify.error('Operacion cancelada!');						    
 					  });		
 		    
 			}
