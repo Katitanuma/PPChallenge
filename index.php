@@ -1,16 +1,16 @@
 <?php
-	/*header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Origin: *");
 	header("Access-Control-Allow-Headers: access");
 	header("Access-Control-Allow-Methods: GET,POST");
 	header("Content-Type: application/json; charset=UTF-8");
 	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 	// Conecta a la base de datos  con usuario, contraseña y nombre de la BD
-	$servidor = "localhost"; 
+	/*$servidor = "localhost"; 
 	$usuario = "root"; 
 	$contrasenia = ""; 
 	$nombreBaseDatos = "quehaceres";
-	$conexionBD = new mysqli($servidor, $usuario, $contrasenia, $nombreBaseDatos);*/
+	$conexionBD = new mysqli($servidor, $usuario, $contrasenia, $nombreBaseDatos);*/*/
 
 	$cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 	$cleardb_server = $cleardb_url["host"];
